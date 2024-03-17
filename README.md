@@ -9,3 +9,6 @@ A group of vr utils for THREE.js.
 
 ### `DeviceOrientationControls.js`
 - Adds looking around camera to threejs.
+
+### `VREffect.js`
+- Adds the stero vr effect to a camera.
