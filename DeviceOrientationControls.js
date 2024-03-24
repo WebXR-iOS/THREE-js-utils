@@ -1,5 +1,4 @@
 /**
- * @author THREE.js Authors
  * @author crazyh / https://github.com/crazyh2
  */
 
@@ -71,24 +70,26 @@
 				onScreenOrientationChangeEvent(); // run once on load
 				// iOS 13+
 
-				if ( window.DeviceOrientationEvent !== undefined && typeof window.DeviceOrientationEvent.requestPermission === 'function' ) {
+				if ( window.DeviceOrientationEvent && typeof(window.DeviceOrientationEvent.requestPermission) === "function" ) {
+					const permissionPrompt = function() {
+						window.DeviceOrientationEvent.requestPermission().then( function ( response ) {
+	
+							if ( response == 'granted' ) {
+	
+								window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent );
+								window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent );
+	
+							}
+	
+						} ).catch( function ( error ) {
+	
+							console.error( 'THREE.DeviceOrientationControls: Unable to use DeviceOrientation API:', error );
+	
+						} );
+						document.body.removeEventListener("click", permissionPrompt);
+					};
 
-					window.DeviceOrientationEvent.requestPermission().then( function ( response ) {
-
-						if ( response == 'granted' ) {
-
-                            onScreenOrientationChangeEvent();
-                            
-							window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent );
-							window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent );
-
-						}
-
-					} ).catch( function ( error ) {
-
-						console.error( 'THREE.DeviceOrientationControls: Unable to use DeviceOrientation API:', error );
-
-					} );
+					document.body.addEventListener("click", permissionPrompt);
 
 				} else {
 
@@ -116,13 +117,13 @@
 
 				if ( device ) {
 
-					const alpha = device.alpha ? THREE.MathUtils.degToRad( device.alpha ) + scope.alphaOffset : 0; // Z
+					const alpha = device.alpha ? THREE.Math.degToRad( device.alpha ) + scope.alphaOffset : 0; // Z
 
-					const beta = device.beta ? THREE.MathUtils.degToRad( device.beta ) : 0; // X'
+					const beta = device.beta ? THREE.Math.degToRad( device.beta ) : 0; // X'
 
-					const gamma = device.gamma ? THREE.MathUtils.degToRad( device.gamma ) : 0; // Y''
+					const gamma = device.gamma ? THREE.Math.degToRad( device.gamma ) : 0; // Y''
 
-					const orient = scope.screenOrientation ? THREE.MathUtils.degToRad( scope.screenOrientation ) : 0; // O
+					const orient = scope.screenOrientation ? THREE.Math.degToRad( scope.screenOrientation ) : 0; // O
 
 					setObjectQuaternion( scope.object.quaternion, alpha, beta, gamma, orient );
 
