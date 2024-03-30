@@ -1,4 +1,5 @@
 /**
+ * @author ThreeJS Authors / https://github.com/mrdoob/three.js
  * @author crazyh / https://github.com/crazyh2
  */
 
